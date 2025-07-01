@@ -22,7 +22,7 @@ export class ProductEntity {
   description: string;
 
   @IsNotEmpty()
-  @Column({ length: 100, nullable: false })
+  @Column({ length: 255, nullable: false })
   publisher: string;
 
   @IsNotEmpty()

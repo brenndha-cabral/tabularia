@@ -14,7 +14,7 @@ export class CategoryEntity {
   id: number;
 
   @IsNotEmpty()
-  @Column({ length: 150, nullable: false })
+  @Column({ length: 255, nullable: false })
   name: string;
 
   @IsNotEmpty()
