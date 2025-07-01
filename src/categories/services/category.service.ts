@@ -2,6 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, ILike, Repository } from 'typeorm';
 import { CategoryEntity } from '../entities/category.entity';
+import { CreateCategoryDto } from '../dtos/createCategory.dto';
+import { UpdateCategoryDto } from '../dtos/updateCategory.dto';
 
 @Injectable()
 export class CategoryService {
@@ -53,13 +55,16 @@ export class CategoryService {
     return categoriesByName;
   }
 
-  async create(category: CategoryEntity): Promise<CategoryEntity> {
+  async create(category: CreateCategoryDto): Promise<CategoryEntity> {
     return await this.categoryRepository.save(category);
   }
 
-  async update(category: CategoryEntity): Promise<CategoryEntity> {
-    await this.findById(category.id);
-    return await this.categoryRepository.save(category);
+  async update(
+    id: number,
+    category: UpdateCategoryDto,
+  ): Promise<CategoryEntity> {
+    await this.findById(id);
+    return await this.categoryRepository.save({ id, ...category });
   }
 
   async delete(id: number): Promise<DeleteResult> {
