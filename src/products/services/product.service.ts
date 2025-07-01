@@ -4,12 +4,14 @@ import { DeleteResult, ILike, Repository } from 'typeorm';
 import { ProductEntity } from '../entities/product.entity';
 import { UpdateProductDto } from '../dtos/updateProduct.dto';
 import { CreateProductDto } from '../dtos/createProduct.dto';
+import { CategoryService } from '../../categories/services/category.service';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(ProductEntity)
     private productRepository: Repository<ProductEntity>,
+    private categoryService: CategoryService,
   ) {}
 
   async findAll(): Promise<ProductEntity[]> {
@@ -49,11 +51,30 @@ export class ProductService {
   }
 
   async create(product: CreateProductDto): Promise<ProductEntity> {
+    const category = await this.categoryService.findById(product.categoryId);
+
+    if (!category) {
+      throw new HttpException(
+        'Categoria não encontrada!',
+        HttpStatus.NOT_FOUND,
+      );
+    }
     return await this.productRepository.save(product);
   }
 
   async update(id: number, product: UpdateProductDto): Promise<ProductEntity> {
     await this.findById(id);
+
+    if (product.categoryId !== undefined) {
+      const category = await this.categoryService.findById(product.categoryId);
+
+      if (!category) {
+        throw new HttpException(
+          'Categoria não encontrada!',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+    }
     return await this.productRepository.save({ id, ...product });
   }
 
