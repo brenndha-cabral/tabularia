@@ -1,17 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, ILike, Repository } from 'typeorm';
-import { Product } from '../entities/product.entity';
+import { ProductEntity } from '../entities/product.entity';
 
 @Injectable()
 export class ProductService {
   constructor(
-    @InjectRepository(Product)
-    private productRepository: Repository<Product>,
+    @InjectRepository(ProductEntity)
+    private productRepository: Repository<ProductEntity>,
   ) {}
 
-  async findAll(): Promise<Product[]> {
-    const products: Product[] = await this.productRepository.find({
+  async findAll(): Promise<ProductEntity[]> {
+    const products: ProductEntity[] = await this.productRepository.find({
       relations: { category: true },
     });
 
@@ -21,7 +21,7 @@ export class ProductService {
     return products;
   }
 
-  async findById(id: number): Promise<Product> {
+  async findById(id: number): Promise<ProductEntity> {
     const productById = await this.productRepository.findOne({
       where: { id },
       relations: { category: true },
@@ -34,8 +34,8 @@ export class ProductService {
     return productById;
   }
 
-  async findByName(name: string): Promise<Product[]> {
-    const productsByName: Product[] = await this.productRepository.find({
+  async findByName(name: string): Promise<ProductEntity[]> {
+    const productsByName: ProductEntity[] = await this.productRepository.find({
       where: { name: ILike(`%${name}%`) },
     });
 
@@ -46,11 +46,11 @@ export class ProductService {
     return productsByName;
   }
 
-  async create(product: Product): Promise<Product> {
+  async create(product: ProductEntity): Promise<ProductEntity> {
     return await this.productRepository.save(product);
   }
 
-  async update(product: Product): Promise<Product> {
+  async update(product: ProductEntity): Promise<ProductEntity> {
     await this.findById(product.id);
     return await this.productRepository.save(product);
   }

@@ -6,10 +6,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Category } from '../../categories/entities/category.entity';
+import { CategoryEntity } from '../../categories/entities/category.entity';
 
 @Entity({ name: 'tb_products' })
-export class Product {
+export class ProductEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -52,8 +52,8 @@ export class Product {
   @UpdateDateColumn()
   created_at: Date;
 
-  @OneToMany(() => Category, (category) => category.product, {
+  @OneToMany(() => CategoryEntity, (category) => category.product, {
     onDelete: 'CASCADE',
   })
-  category: Category;
+  category: CategoryEntity;
 }

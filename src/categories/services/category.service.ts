@@ -1,17 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, ILike, Repository } from 'typeorm';
-import { Category } from '../entities/category.entity';
+import { CategoryEntity } from '../entities/category.entity';
 
 @Injectable()
 export class CategoryService {
   constructor(
-    @InjectRepository(Category)
-    private categoryRepository: Repository<Category>,
+    @InjectRepository(CategoryEntity)
+    private categoryRepository: Repository<CategoryEntity>,
   ) {}
 
-  async findAll(): Promise<Category[]> {
-    const categories: Category[] = await this.categoryRepository.find({
+  async findAll(): Promise<CategoryEntity[]> {
+    const categories: CategoryEntity[] = await this.categoryRepository.find({
       relations: { product: true },
     });
 
@@ -24,7 +24,7 @@ export class CategoryService {
     return categories;
   }
 
-  async findById(id: number): Promise<Category> {
+  async findById(id: number): Promise<CategoryEntity> {
     const categoryById = await this.categoryRepository.findOne({
       where: { id },
       relations: { product: true },
@@ -37,10 +37,11 @@ export class CategoryService {
     return categoryById;
   }
 
-  async findByName(name: string): Promise<Category[]> {
-    const categoriesByName: Category[] = await this.categoryRepository.find({
-      where: { name: ILike(`%${name}%`) },
-    });
+  async findByName(name: string): Promise<CategoryEntity[]> {
+    const categoriesByName: CategoryEntity[] =
+      await this.categoryRepository.find({
+        where: { name: ILike(`%${name}%`) },
+      });
 
     if (categoriesByName.length === 0) {
       throw new HttpException(
@@ -52,11 +53,11 @@ export class CategoryService {
     return categoriesByName;
   }
 
-  async create(category: Category): Promise<Category> {
+  async create(category: CategoryEntity): Promise<CategoryEntity> {
     return await this.categoryRepository.save(category);
   }
 
-  async update(category: Category): Promise<Category> {
+  async update(category: CategoryEntity): Promise<CategoryEntity> {
     await this.findById(category.id);
     return await this.categoryRepository.save(category);
   }
