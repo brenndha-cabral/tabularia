@@ -14,6 +14,7 @@ import { ProductService } from '../services/product.service';
 import { ProductEntity } from '../entities/product.entity';
 import { UpdateProductDto } from '../dtos/updateProduct.dto';
 import { CreateProductDto } from '../dtos/createProduct.dto';
+import { ApiExtraModels, ApiBody } from '@nestjs/swagger';
 
 @Controller('/products')
 export class ProductController {
@@ -43,7 +44,9 @@ export class ProductController {
     return this.productsService.create(product);
   }
 
+  @ApiExtraModels(UpdateProductDto)
   @Put('/:id')
+  @ApiBody({ type: CreateProductDto })
   @HttpCode(HttpStatus.OK)
   update(
     @Param('id', ParseIntPipe) id: number,

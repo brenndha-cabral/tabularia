@@ -20,8 +20,6 @@ async function bootstrap() {
       '📘 API para gerenciamento de jogos de tabuleiro e suas categorias.',
     )
     .setVersion('1.0')
-    .addTag('jogos')
-    .addTag('categorias')
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);

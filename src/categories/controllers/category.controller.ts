@@ -14,6 +14,7 @@ import { CategoryService } from '../services/category.service';
 import { CategoryEntity } from '../entities/category.entity';
 import { CreateCategoryDto } from '../dtos/createCategory.dto';
 import { UpdateCategoryDto } from '../dtos/updateCategory.dto';
+import { ApiBody, ApiExtraModels } from '@nestjs/swagger';
 
 @Controller('/categories')
 export class CategoryController {
@@ -43,7 +44,9 @@ export class CategoryController {
     return this.categoryService.create(category);
   }
 
+  @ApiExtraModels(UpdateCategoryDto)
   @Put('/:id')
+  @ApiBody({ type: CreateCategoryDto })
   @HttpCode(HttpStatus.OK)
   update(
     @Param('id', ParseIntPipe) id: number,
