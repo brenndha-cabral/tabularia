@@ -25,7 +25,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('swagger', app, document);
+  SwaggerModule.setup('', app, document); // ente as aspas eu posso escrever 'swagger por exemplo e o endpoint ficaria assim: http://localhost:4000/swagger
 
   await app.listen(port);
 }
