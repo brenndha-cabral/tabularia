@@ -2,6 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, ILike, Repository } from 'typeorm';
 import { ProductEntity } from '../entities/product.entity';
+import { UpdateProductDto } from '../dtos/updateProduct.dto';
+import { CreateProductDto } from '../dtos/createProduct.dto';
 
 @Injectable()
 export class ProductService {
@@ -46,13 +48,13 @@ export class ProductService {
     return productsByName;
   }
 
-  async create(product: ProductEntity): Promise<ProductEntity> {
+  async create(product: CreateProductDto): Promise<ProductEntity> {
     return await this.productRepository.save(product);
   }
 
-  async update(product: ProductEntity): Promise<ProductEntity> {
-    await this.findById(product.id);
-    return await this.productRepository.save(product);
+  async update(id: number, product: UpdateProductDto): Promise<ProductEntity> {
+    await this.findById(id);
+    return await this.productRepository.save({ id, ...product });
   }
 
   async delete(id: number): Promise<DeleteResult> {
