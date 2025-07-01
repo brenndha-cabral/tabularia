@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -12,6 +13,19 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors();
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Tabulária API')
+    .setDescription(
+      '📘 API para gerenciamento de jogos de tabuleiro e suas categorias.',
+    )
+    .setVersion('1.0')
+    .addTag('jogos')
+    .addTag('categorias')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('swagger', app, document);
 
   await app.listen(port);
 }
