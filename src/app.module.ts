@@ -1,6 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CategoryEntity } from './categories/entities/category.entity';
+import { ProductEntity } from './products/entities/product.entity';
+import { CategoryModule } from './categories/category.module';
+import { ProductModule } from './products/product.module';
 
 @Module({
   imports: [
@@ -15,10 +19,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         username: config.get<string>('DATABASE_USER'),
         password: config.get<string>('DATABASE_PASSWORD'),
         database: config.get<string>('DATABASE_NAME'),
-        entities: [],
+        entities: [CategoryEntity, ProductEntity],
         synchronize: true,
       }),
     }),
+    CategoryModule,
+    ProductModule,
   ],
 })
 export class AppModule {}
