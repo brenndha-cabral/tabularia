@@ -9,7 +9,8 @@ export class CreateCategoryDto {
 
   @ApiProperty({
     description: 'Descrição da categoria',
-    example: 'Jogos de estratégia em tabuleiro',
+    example:
+      'Jogos que exigem planejamento e tomada de decisões táticas para vencer.',
   })
   @IsNotEmpty()
   @IsString()
