@@ -1,4 +1,3 @@
-import { IsNotEmpty } from 'class-validator';
 import {
   Column,
   Entity,
@@ -13,11 +12,9 @@ export class CategoryEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @IsNotEmpty()
   @Column({ length: 255, nullable: false })
   name: string;
 
-  @IsNotEmpty()
   @Column({ type: 'text', nullable: false })
   description: string;
 
