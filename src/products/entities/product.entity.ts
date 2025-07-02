@@ -1,7 +1,8 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -39,10 +40,13 @@ export class ProductEntity {
   @Column({ type: 'year', nullable: false })
   release_year: number;
 
-  @UpdateDateColumn()
+  @CreateDateColumn()
   created_at: Date;
 
-  @OneToMany(() => CategoryEntity, (category) => category.product, {
+  @UpdateDateColumn()
+  update_at: Date;
+
+  @ManyToOne(() => CategoryEntity, (category) => category.product, {
     onDelete: 'CASCADE',
   })
   category: CategoryEntity;
